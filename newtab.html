@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>New Tab</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="script.js" defer></script>
+	<script src="background.js" defer></script>
+</head>
+<body>
+	<div class="container">
+		<div class="clock">
+				<h1 id="time">00:00:00</h1>
+				<p id="date">Loading...</p>
+		</div>
+
+		<div class="search-box">
+				<input type="text" id="search-input" placeholder="Search here...">
+				<button id="search-btn">Search</button>
+		</div>
+
+		<div class="quick-links">
+				<div id="links-container">
+					</div>
+					<a class="link-box" id="add-link"><img src="./" alt="add"/></a>
+		</div>
+		<div id="overlay">
+			<input type="text" name="name" id="link-name"/>
+			<input type="url" name="url" id="link-url"/>
+			<button id="submit-link">Add</button>
+		</div>
+</div>
+
+</body>
+</html>
