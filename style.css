@@ -1,7 +1,7 @@
 body {
 	background: #000;
 	color: white;
-	font-family: "JetBrains Mono";
+	font-family: "JetBrains Mono",monospace;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -29,21 +29,27 @@ body {
 
 #date {
 	font-size: 18px;
-	color: #555;
+	color: #a8a8a8;
 }
 
 .search-box {
 	display: flex;
 	margin-bottom: 20px;
+	background: rgba(170, 170, 170, 0.38);
+	border-radius: 5px;
 }
 
 #search-input {
 	width: 200px;
 	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
+	background: transparent;
+	border: none;
+	margin:0;
 }
-
+#search-input::placeholder {
+	color: #cccccc;
+	font-family: 'JetBrains Mono', monospace;
+}
 #search-btn {
 	padding: 10px;
 	background-color: #0078d7;
@@ -62,26 +68,44 @@ body {
 	flex-wrap: wrap;
 	gap: 10px;
 }
-
+a {
+	text-decoration: none;
+	color: white;
+}
 .link-box {
-	width: 50px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background:transparent;
+	border-radius: 8px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
+	padding: 10px 15px;
+}
+.link-box:hover {
+	background: #353535;
+}
+.link-icon{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 50px;
-	background-color: rgb(53, 53, 53);
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius:12px;
+	width:42px;
+	height:42px;
+	background: #4c4c4c;
+	overflow: hidden;
 }
 
-.link-box img {
-	width: 40px;
-	height: 40px;
+.link-img {
+	width: 80%;
+	height: 80%;
+}
+.link-text {
+	margin: 0;
+}
+
+.add-box {
+
 }
 #overlay{
 	display: none;

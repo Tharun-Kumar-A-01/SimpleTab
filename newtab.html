@@ -11,26 +11,32 @@
 <body>
 	<div class="container">
 		<div class="clock">
-				<h1 id="time">00:00:00</h1>
-				<p id="date">Loading...</p>
+			<h1 id="time">00:00:00</h1>
+			<p id="date">Loading...</p>
 		</div>
 
 		<div class="search-box">
-				<input type="text" id="search-input" placeholder="Search here...">
-				<button id="search-btn">Search</button>
+			<label for="search-input"></label>
+			<input type="text" id="search-input" placeholder="Search here...">
+			<button id="search-btn">Search</button>
 		</div>
 
 		<div class="quick-links">
-				<div id="links-container">
-					</div>
-					<a class="link-box" id="add-link"><img src="./" alt="add"/></a>
+			<div id="links-container"></div>
+			<div class="link-box">
+				<a class="link-icon" id="add-link">
+					<img src="assets/add-icon.svg" width="16" height="16" alt="add-icon">
+				</a>
+				<p class="link-text">Add</p>
+			</div>
 		</div>
 		<div id="overlay">
+			<label for="link-name"></label>
 			<input type="text" name="name" id="link-name"/>
+			<label for="link-url"></label>
 			<input type="url" name="url" id="link-url"/>
 			<button id="submit-link">Add</button>
 		</div>
-</div>
-
+	</div>
 </body>
 </html>
