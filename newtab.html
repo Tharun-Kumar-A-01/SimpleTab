@@ -9,26 +9,52 @@
 	<script src="background.js" defer></script>
 </head>
 <body>
+	<div class="top-margin"></div>
+	<div class="bottom-margin"></div>
+	<div class="plus-1">
+		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
+		<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+	</svg></div>
+	<div class="plus-2">
+		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
+			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+		</svg>
+	</div>
+	<div class="plus-3">
+		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
+			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+		</svg>
+	</div>
+	<div class="plus-4">
+		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
+			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+		</svg>
+	</div>
 	<div class="container">
 		<div class="clock">
-			<h1 id="time">00:00:00</h1>
+			<div class="time">
+				<h1 id="time">00:00:00</h1>
+				<p id="noon">AM</p>
+			</div>
 			<p id="date">Loading...</p>
 		</div>
 
 		<div class="search-box">
 			<label for="search-input"></label>
 			<input type="text" id="search-input" placeholder="Search here...">
-			<button id="search-btn">Search</button>
+			<button id="search-btn"><svg width="24" height="24" viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<circle cx="50%" r="50" stroke="white" stroke-width="10"/>
+				<rect y="120" x="70" width="10" height="60" rx="6" transform="rotate(-45)" fill="white"/>
+			</svg></button>
 		</div>
 
 		<div class="quick-links">
 			<div id="links-container"></div>
-			<div class="link-box">
-				<a class="link-icon" id="add-link">
-					<img src="assets/add-icon.svg" width="16" height="16" alt="add-icon">
-				</a>
-				<p class="link-text">Add</p>
-			</div>
+
 		</div>
 		<div id="overlay">
 			<label for="link-name"></label>

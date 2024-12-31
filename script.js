@@ -1,14 +1,21 @@
 // Time and date update function
 function updateTime() {
 	const timeElement = document.getElementById('time');
+	const noonElement = document.getElementById('noon');
 	const dateElement = document.getElementById('date');
 	const now = new Date();
-
-	const hours = String(now.getHours()).padStart(2, '0');
+	let hrs=now.getHours()
+	let pm = false
+	if (hrs>12){
+		hrs = hrs-12;
+		pm = true
+	}
+	const hours = String(hrs).padStart(2, '0');
 	const minutes = String(now.getMinutes()).padStart(2, '0');
 	const seconds = String(now.getSeconds()).padStart(2, '0');
-	timeElement.textContent = `${hours}:${minutes}:${seconds}`;
 
+	timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+	noonElement.textContent = ` ${pm?"PM":"AM"}`;
 	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	dateElement.textContent = now.toLocaleDateString(undefined, options);
 }
@@ -17,12 +24,26 @@ function updateTime() {
 setInterval(updateTime, 500);
 updateTime();
 
+// Load quick links on load
+loadQuickLinks();
+
 // Search functionality
 document.getElementById('search-btn').addEventListener('click', (e) => {
 	e.preventDefault();
-	const query = document.getElementById('search-input').value;
+	let query = document.getElementById('search-input').value;
 	window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
 });
+
+//
+document.getElementById('search-input').addEventListener('keypress', (e) => {
+	e.preventDefault();
+	let query = document.getElementById('search-input');
+	if (e.key === 'Enter') {
+		window.open(`https://www.google.com/search?q=${encodeURIComponent(query.value)}`);
+	} else {
+		query.value = query.value + e.key;
+	}
+})
 
 //triggers pop-up when add button is clicked
 document.getElementById("add-link").addEventListener("click",(e)=>{
@@ -65,18 +86,29 @@ function loadQuickLinks() {
 	const linksContainer = document.getElementById('links-container');
 	linksContainer.innerHTML=''
 	const result = localStorage.getItem('quickLinks');
-		const quickLinks = JSON.parse(result) || [];
-		console.log(result,quickLinks);
-		quickLinks.map((link) => {
-			if(link){
-				const linkBox = document.createElement('div');
-				linkBox.classList.add('link-box');
-				linkBox.innerHTML = `<a class="link-icon" href="${link.url}" target="_blank"><img class="link-img" src="${link.url}/favicon" alt="${link.name}"></a><p class="link-text">${link.name}</p>`;
-				linksContainer.appendChild(linkBox);
-			}
-		});
+	const quickLinks = JSON.parse(result) || [];
+	console.log(result,quickLinks);
+	quickLinks.map((link) => {
+		if(link){
+			const linkBox = document.createElement('div');
+			linkBox.classList.add('link-box');
+			linkBox.innerHTML = `<a class="link-icon" href="${link.url}" target="_blank">
+				<img class="link-img" src="${link.url}/favicon" alt="${link.name}">
+				</a><p class="link-text">${link.name}</p>
+				<button class="menu-btn" id="menu-btn"><svg width="12" height="12" viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect x="40%" width="32" height="32" rx="15.5" fill="white"/>
+				<rect x="" width="32" height="32" rx="15.5"  fill="white"/>
+				<rect x="80%" width="32" height="32" rx="15.5"  fill="white"/>
+				</svg></button>`;
+			linksContainer.appendChild(linkBox);
+		}
+	});
+	linksContainer.innerHTML += `<div class="link-box">
+<a class="link-icon" id="add-link">
+<img src="assets/add-icon.svg" width="16" height="16" alt="add-icon">
+</a>
+<p class="link-text">Add</p>
+</div>`
 }
 
 
-// Load quick links on load
-loadQuickLinks();
