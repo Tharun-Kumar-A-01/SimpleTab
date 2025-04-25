@@ -3,38 +3,350 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="Tharun Kumar">
+	<meta name="description" content="A simple Homepage">
+	<meta name="keywords" content="newtab, tab, homepage">
 	<title>New Tab</title>
-	<link rel="stylesheet" href="style.css">
 	<script src="script.js" defer></script>
 	<script src="background.js" defer></script>
 </head>
 <body>
+
+	<!-- MAIN STYLES -->
+	<style>
+		body {
+			background: #000;
+			color: white;
+			font-family: "JetBrains Mono", monospace;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			width: calc(100vw - 100px);
+			margin: 0 50px;
+			padding: 0;
+			border-left: 1px dashed #0080ff;
+			border-right: 1px dashed #0080ff;
+			overflow: hidden;
+		}
+
+		.top-margin,
+		.bottom-margin {
+			position: absolute;
+			width: 100vw;
+			height: 50px;
+		}
+
+		.top-margin {
+			top: 0;
+			left: 0;
+			border-bottom: 1px dashed #0080ff;
+		}
+
+		.bottom-margin {
+			bottom: 0;
+			left: 0;
+			border-top: 1px dashed #0080ff;
+		}
+
+		.plus-1 {
+			top: 44px;
+			left: 45px;
+		}
+
+		.plus-2 {
+			top: 44px;
+			right: 43px;
+		}
+
+		.plus-3 {
+			bottom: 40px;
+			left: 45px;
+		}
+
+		.plus-4 {
+			bottom: 40px;
+			right: 43px;
+		}
+
+		.plus-1,
+		.plus-2,
+		.plus-3,
+		.plus-4 {
+			position: absolute;
+			color: #0080ff;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			width: 100%
+		}
+
+		.clock {
+			margin-bottom: 20px;
+		}
+
+		.time {
+			display: flex;
+			flex-direction: row;
+		}
+
+		#noon {
+			padding-left: 3px;
+			padding-top: 12px;
+			margin: 0;
+		}
+
+		#time {
+			font-size: 48px;
+			margin: 0;
+		}
+
+		#date {
+			font-size: 18px;
+			color: #a8a8a8;
+		}
+
+		.search-box {
+			display: flex;
+			margin-bottom: 20px;
+			background: rgba(170, 170, 170, 0.38);
+			border-radius: 999px;
+			width: 90%;
+			max-width: 500px;
+		}
+
+		#search-input {
+			width: 100%;
+			padding: 10px 15px;
+			background: transparent;
+			border: none;
+			margin: 0 0 0 10px;
+			font-family: 'JetBrains Mono', monospace;
+			color: white;
+		}
+
+		#search-input:focus-visible {
+			outline: none;
+		}
+
+		#search-input::placeholder {
+			color: #cccccc;
+			font-family: 'JetBrains Mono', monospace;
+		}
+
+		#search-btn {
+			padding: 10px 12px 8px 10px;
+			background-color: #0080ff;
+			color: white;
+			border: none;
+			border-radius: 9995px;
+			cursor: pointer;
+		}
+
+		.quick-links {
+			margin-top: 20px;
+		}
+
+		#links-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			justify-content: center;
+			max-width: 620px;
+			min-height: 100px;
+		}
+
+		a {
+			text-decoration: none;
+			color: white;
+		}
+
+		.link-box {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			background: rgb(43, 43, 43);
+			border-radius: 8px;
+			box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
+			padding: 10px 15px;
+			position: relative;
+			border: 1px solid transparent;
+			width: 270px;
+			height: fit-content;
+		}
+
+		.link-box:hover {
+			border: 1px solid #353535;
+		}
+
+		.link-text {
+			margin: 0;
+			overflow: hidden;
+		}
+
+		.add-btn {
+			border: none;
+			padding: 8px 16px;
+			border-radius: 9999px;
+			color: black;
+			background: #0080ff;
+			font-size: larger;
+			margin-top: 12px;
+		}
+
+		.link-box:hover>.menu-btn {
+			display: flex;
+		}
+
+		.menu-btn {
+			display: none;
+			align-items: center;
+			justify-content: center;
+			background: #4c4c4c;
+			padding-top: 4px;
+			padding-bottom: 4px;
+			border-radius: 12px;
+			border: none;
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			cursor: pointer;
+		}
+
+		.settings-btn {
+			position: absolute;
+			bottom: 8px;
+			right: 7px;
+			cursor: pointer;
+			padding: 5px;
+			width: 24px;
+			height: 24px;
+			border-radius: 9999px;
+			background: #3c3c3c;
+			opacity: 50%;
+			transition: 0.3s all ease;
+		}
+
+		.settings-btn:hover {
+			opacity: 1;
+		}
+
+		#overlay {
+			display: none;
+			transition: all 0.2s ease-in;
+			flex-direction: column;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			padding: 25px;
+			border-radius: 16px;
+			background-color: #252525;
+			transform: translateX(-50%) translateY(-50%);
+			z-index: 2;
+			gap: 6px;
+			align-items: center;
+			border: #4c4c4c 1px solid;
+			box-shadow: 0 9px 150px 80px #000;
+		}
+
+		#link-name,
+		#link-url {
+			background: #222222;
+			border: 1px solid #161616;
+			padding: 8px 16px;
+			border-radius: 999px;
+			font-size: larger;
+			color: white;
+		}
+
+		#link-name::placeholder,
+		#link-url::placeholder {
+			font-family: "JetBrains Mono";
+			color: #454545;
+		}
+
+		#submit-link {
+			background: #0080ff;
+			width: fit-content;
+			font-size: larger;
+			color: black;
+			border: none;
+			border-radius: 999px;
+			padding: 8px 16px;
+			margin-top: 12px;
+		}
+
+		#pagination {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			gap: 12px;
+			margin-top: 12px;
+		}
+
+		.page-btn {
+			background: #414141;
+			border: none;
+			border-radius: 100px;
+			margin: 0;
+			padding: 0.5rem 0.9rem;
+			aspect-ratio: 1/1;
+			font-size: larger;
+			color: white;
+		}
+
+		.current-page-btn {
+			background: #ffffff;
+			color: #000;
+		}
+
+		.overlay-bg {
+			display: none;
+			background: #000000b0;
+			width: 100vw;
+			height: 100vh;
+			position: absolute;
+		}
+	</style>
+
+	<!-- DASHED BORDER EFFECT -->
 	<div class="top-margin"></div>
 	<div class="bottom-margin"></div>
 	<div class="plus-1">
 		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
-		<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
-	</svg></div>
+			<rect x="0" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff" />
+			<rect x="0" y="91" width="100%" height="32" rx="15.5" fill="#0080ff" />
+		</svg>
+	</div>
 	<div class="plus-2">
 		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
-			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+			<rect x="0" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff" />
+			<rect x="0" y="91" width="100%" height="32" rx="15.5" fill="#0080ff" />
 		</svg>
 	</div>
 	<div class="plus-3">
 		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
-			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+			<rect x="0" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff" />
+			<rect x="0" y="91" width="100%" height="32" rx="15.5" fill="#0080ff" />
 		</svg>
 	</div>
 	<div class="plus-4">
 		<svg width="12" height="12" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<rect x="" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff"/>
-			<rect x="" y="91" width="100%" height="32" rx="15.5"  fill="#0080ff"/>
+			<rect x="0" y="-127" width="100%" height="32" rx="15.5" transform="rotate(90)" fill="#0080ff" />
+			<rect x="0" y="91" width="100%" height="32" rx="15.5" fill="#0080ff" />
 		</svg>
 	</div>
+	
+	<!-- MAIN CONTAINER -->
 	<div class="container">
+		
+		<!-- CLOCK -->
 		<div class="clock">
 			<div class="time">
 				<h1 id="time">00:00:00</h1>
@@ -43,26 +355,134 @@
 			<p id="date">Loading...</p>
 		</div>
 
+		<!-- SEARCH BOX -->
 		<div class="search-box">
 			<label for="search-input"></label>
 			<input type="text" id="search-input" placeholder="Search here...">
-			<button id="search-btn"><svg width="24" height="24" viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="50%" r="50" stroke="white" stroke-width="10"/>
-				<rect y="120" x="70" width="10" height="60" rx="6" transform="rotate(-45)" fill="white"/>
-			</svg></button>
+			<button id="search-btn" name="search" aria-label="click here to search"><svg width="24" height="24"
+					viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="50%" r="50" stroke="white" stroke-width="10" />
+					<rect y="120" x="70" width="10" height="60" rx="6" transform="rotate(-45)" fill="white" />
+				</svg></button>
 		</div>
 
+		<!-- QUICK LINKS -->
 		<div class="quick-links">
 			<div id="links-container"></div>
+			<div class="pagination" id="pagination"></div>
+			<button class="add-btn" id="add-link">ADD</button>
+		</div>
 
-		</div>
-		<div id="overlay">
+		<!-- ADD QUICK LINK POP-UP -->
+		<form id="overlay" method="post">
 			<label for="link-name"></label>
-			<input type="text" name="name" id="link-name"/>
+			<input type="text" name="name" id="link-name" placeholder="Name" required aria-required="true"/>
 			<label for="link-url"></label>
-			<input type="url" name="url" id="link-url"/>
-			<button id="submit-link">Add</button>
-		</div>
+			<input type="url" name="url" id="link-url" placeholder="Link" required aria-required="true"/>
+			<input id="submit-link" type="submit" value="ADD" />
+		</form>
 	</div>
+
+	<!-- SETTING BUTTON (will be used in future. now placed as a placeholder) -->
+	<div class="settings-btn" id="settings-btn">
+		<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+			<path clip-rule="evenodd"
+				d="m14.302 6.457-.668-.278L12.87 3.5h-1.737l-.766 2.68-.668.277c-.482.2-.934.463-1.344.778l-.575.44-2.706-.677-.868 1.504 1.938 2.003-.093.716c-.033.255-.05.514-.05.779 0 .264.017.524.05.779l.093.716-1.938 2.003.868 1.504 2.706-.677.575.44c.41.315.862.577 1.344.778l.668.278.766 2.679h1.737l.765-2.68.668-.277c.483-.2.934-.463 1.345-.778l.574-.44 2.706.677.869-1.504-1.938-2.003.092-.716c.033-.255.05-.514.05-.779 0-.264-.017-.524-.05-.779l-.092-.716 1.938-2.003-.869-1.504-2.706.677-.574-.44c-.41-.315-.862-.577-1.345-.778Zm4.436.214Zm-3.86-1.6-.67-2.346c-.123-.429-.516-.725-.962-.725h-2.492c-.446 0-.838.296-.961.725l-.67 2.347c-.605.251-1.17.58-1.682.972l-2.37-.593c-.433-.108-.885.084-1.108.47L2.717 8.08c-.223.386-.163.874.147 1.195l1.698 1.755c-.04.318-.062.642-.062.971 0 .329.021.653.062.97l-1.698 1.756c-.31.32-.37.809-.147 1.195l1.246 2.158c.223.386.675.578 1.109.47l2.369-.593c.512.393 1.077.72 1.681.972l.67 2.347c.124.429.516.725.962.725h2.492c.446 0 .839-.296.961-.725l.67-2.347c.605-.251 1.17-.58 1.682-.972l2.37.593c.433.108.885-.084 1.109-.47l1.245-2.158c.223-.386.163-.874-.147-1.195l-1.698-1.755c.04-.318.062-.642.062-.971 0-.329-.021-.653-.062-.97l1.698-1.756c.31-.32.37-.809.147-1.195L20.038 5.92c-.224-.386-.676-.578-1.11-.47l-2.369.593c-.512-.393-1.077-.72-1.681-.972ZM15.5 12c0 1.933-1.567 3.5-3.5 3.5S8.5 13.933 8.5 12s1.567-3.5 3.5-3.5 3.5 1.567 3.5 3.5ZM14 12c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2Z"
+				fill-rule="evenodd" fill="white" />
+		</svg>
+	</div>
+
+	<!-- DARK BACKGROUND WHEN POP-UP OPENS -->
+	<div class="overlay-bg" id="overlay-bg"></div>
+
+	<!-- STYLES FOR RESPONSIVE UI -->
+	<style>
+		@media (width<420px) {
+
+			.top-margin,
+			.bottom-margin {
+				height: 30px;
+			}
+
+			body {
+				margin: 0 30px;
+				width: calc(100vw - 60px);
+			}
+
+			.plus-1 {
+				top: 20px;
+				left: 25px;
+			}
+
+			.plus-2 {
+				top: 20px;
+				right: 23px;
+			}
+
+			.plus-3 {
+				bottom: 20px;
+				left: 25px;
+			}
+
+			.plus-4 {
+				bottom: 20px;
+				right: 23px;
+			}
+
+			.settings-btn {
+				bottom: 36px;
+				right: 34px;
+			}
+		}
+
+		@media (width<360px) {
+
+			.top-margin,
+			.bottom-margin {
+				display: none;
+				border: none;
+			}
+
+			html {
+				overflow: hidden;
+			}
+
+			body {
+				margin: 0;
+				width: calc(100vw - 2px);
+				height: calc(100vh - 2px);
+				border: none;
+			}
+
+			.link-box {
+				width: 100%;
+				margin: 0 5px;
+			}
+
+			.plus-1,
+			.plus-2,
+			.plus-3,
+			.plus-4 {
+				display: none;
+			}
+
+			.settings-btn {
+				bottom: 8px;
+				right: 7px;
+			}
+
+			#overlay {
+				width: 80%;
+
+			}
+
+			#link-name,
+			#link-url,
+			#submit-link {
+				width: 100%;
+			}
+		}
+	</style>
+
 </body>
 </html>

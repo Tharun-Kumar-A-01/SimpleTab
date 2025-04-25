@@ -1,13 +1,10 @@
 {
   "manifest_version": 3,
   "name": "SimpleTab",
-  "version": "1.0",
+  "version": "0.5",
   "description": "A simple Homepage",
   "author": "Tharun Kumar",
   "permissions": ["storage"],
-  "background": {
-    "service_worker": "background.js"
-  },
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   }
