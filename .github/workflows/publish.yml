@@ -1,32 +1,75 @@
-name: Publish Firefox Extension
+name: Publish to Mozilla Add-ons
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
       - name: Install web-ext
-        run: npm install --global web-ext
+        run: npm install -g web-ext
 
-      - name: Build and sign extension
+      - name: Get version from manifest
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extension version: $VERSION"
+
+      - name: Build extension (create zip)
+        run: |
+          mkdir -p build
+          zip -r build/extension-${{ steps.get_version.outputs.version }}.zip \
+            manifest.json \
+            index.html \
+            script.js \
+            assets/ \
+            -x "*.git*" "*.DS_Store"
+          
+          echo "Created extension archive"
+          ls -lh build/
+
+      - name: Sign and publish to Mozilla Add-ons
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: |
           web-ext sign \
-            --source-dir ./ \
-            --artifacts-dir ./web-ext-artifacts \
-            --api-key=${{ secrets.AMO_JWT_ISSUER }} \
-            --api-secret=${{ secrets.AMO_JWT_SECRET }} \
-            --channel=listed
+            --source-dir=. \
+            --artifacts-dir=./web-ext-artifacts \
+            --channel=listed \
+            --api-key=$WEB_EXT_API_KEY \
+            --api-secret=$WEB_EXT_API_SECRET
+
+      - name: Upload signed extension as artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: signed-extension-${{ steps.get_version.outputs.version }}
+          path: web-ext-artifacts/*.xpi
+          retention-days: 30
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build/extension-${{ steps.get_version.outputs.version }}.zip
+            web-ext-artifacts/*.xpi
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
