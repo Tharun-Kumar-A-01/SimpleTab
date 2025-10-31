@@ -1,0 +1,32 @@
+name: Publish Firefox Extension
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install web-ext
+        run: npm install --global web-ext
+
+      - name: Build and sign extension
+        run: |
+          web-ext sign \
+            --source-dir ./ \
+            --artifacts-dir ./web-ext-artifacts \
+            --api-key=${{ secrets.AMO_JWT_ISSUER }} \
+            --api-secret=${{ secrets.AMO_JWT_SECRET }} \
+            --channel=listed
