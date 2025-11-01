@@ -8,7 +8,6 @@
 	<meta name="keywords" content="newtab, tab, homepage">
 	<title>New Tab</title>
 	<script src="script.js" defer></script>
-	<script src="background.js" defer></script>
 </head>
 <body>
 
@@ -393,7 +392,92 @@
 			<path clip-rule="evenodd" d="m14.302 6.457-.668-.278L12.87 3.5h-1.737l-.766 2.68-.668.277c-.482.2-.934.463-1.344.778l-.575.44-2.706-.677-.868 1.504 1.938 2.003-.093.716c-.033.255-.05.514-.05.779 0 .264.017.524.05.779l.093.716-1.938 2.003.868 1.504 2.706-.677.575.44c.41.315.862.577 1.344.778l.668.278.766 2.679h1.737l.765-2.68.668-.277c.483-.2.934-.463 1.345-.778l.574-.44 2.706.677.869-1.504-1.938-2.003.092-.716c.033-.255.05-.514.05-.779 0-.264-.017-.524-.05-.779l-.092-.716 1.938-2.003-.869-1.504-2.706.677-.574-.44c-.41-.315-.862-.577-1.345-.778Zm4.436.214Zm-3.86-1.6-.67-2.346c-.123-.429-.516-.725-.962-.725h-2.492c-.446 0-.838.296-.961.725l-.67 2.347c-.605.251-1.17.58-1.682.972l-2.37-.593c-.433-.108-.885.084-1.108.47L2.717 8.08c-.223.386-.163.874.147 1.195l1.698 1.755c-.04.318-.062.642-.062.971 0 .329.021.653.062.97l-1.698 1.756c-.31.32-.37.809-.147 1.195l1.246 2.158c.223.386.675.578 1.109.47l2.369-.593c.512.393 1.077.72 1.681.972l.67 2.347c.124.429.516.725.962.725h2.492c.446 0 .839-.296.961-.725l.67-2.347c.605-.251 1.17-.58 1.682-.972l2.37.593c.433.108.885-.084 1.109-.47l1.245-2.158c.223-.386.163-.874-.147-1.195l-1.698-1.755c.04-.318.062-.642.062-.971 0-.329-.021-.653-.062-.97l1.698-1.756c.31-.32.37-.809.147-1.195L20.038 5.92c-.224-.386-.676-.578-1.11-.47l-2.369.593c-.512-.393-1.077-.72-1.681-.972ZM15.5 12c0 1.933-1.567 3.5-3.5 3.5S8.5 13.933 8.5 12s1.567-3.5 3.5-3.5 3.5 1.567 3.5 3.5ZM14 12c0 1.105-.895 2-2 2s-2-.895-2-2 .895-2 2-2 2 .895 2 2Z" fill-rule="evenodd" fill="white" />
 		</svg>
 	</div>
+	<div class="settings-menu" id="setting-maenu">
+		<div id="search-settings">
+			<h3 class="settings-title">Search Engine</h3>
+			<label>
+				<input type="radio" value="duckduckgo" name="search_engine" id="option-duckduckgo">
+				<div class="label-icon">
+					<img src="./assets/DuckDuckGo-Logo-SVG_005.svg" height="20px" width="20px">
+					<p>DuckDuckGo</p>
+				</div>
+			</label>
+			<label>
+				<input type="radio" value="startpage" name="search_engine" id="option-startpage">
+				<div class="label-icon">
+					<img src="./assets/startpage-icon.svg" height="20px" width="20px">
+					<p>StartPage</p>
+				</div>
+			</label>
+			<label>
+				<input type="radio" value="google" name="search_engine" id="option-google">
+				<div class="label-icon">
+					<img src="./assets/google-icon.svg" height="20px" width="20px">
+					<p>Google</p>
+				</div>
+			</label>
+		</div>
+		<div id="clock-settings">
+			<h3 class="settings-title">Clock</h3>
 
+			<label>
+				Use 24hr clock format
+				<input type="checkbox" id="clock-format">
+			</label>
+			<label>
+				Show seconds
+				<input type="checkbox" id="show-seconds">
+			</label>
+		</div>
+		<style>
+			img{
+				background: #fff;
+				border-radius: 100%;
+				padding: 3px;
+			}
+			.settings-menu {
+				transition: all 0.2s ease-in;
+				flex-direction: column;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				padding: 25px;
+				border-radius: 16px;
+				background-color: #252525;
+				transform: translateX(-50%) translateY(-50%);
+				z-index: 2;
+				gap: 6px;
+				align-items: center;
+				border: #4c4c4c 1px solid;
+				box-shadow: 0 9px 150px 80px #000;
+				min-width:40%;
+			}
+			.settings-menu #search-settings {
+				display: flex;
+				gap:12px;
+				flex-direction: column;
+			}
+			#search-settings label {
+				display: flex;
+				gap: 12px;
+				flex-direction: row;
+			}
+			#search-settings label input {
+				margin: 0;
+				padding: 0;
+			}
+			.label-icon {
+				display: flex;
+				flex-direction: row;
+				gap:8px;
+				align-items: center;
+			}
+			.settings-title {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</div>
 	<!-- DARK BACKGROUND WHEN POP-UP OPENS -->
 	<div class="overlay-bg" id="overlay-bg"></div>
 
@@ -414,6 +498,9 @@
 			.settings-btn {
 				bottom: 36px;
 				right: 34px;
+			}
+			.settings-menu {
+				width: 80%;
 			}
 		}
 

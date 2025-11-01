@@ -66,14 +66,35 @@ setInterval(updateTime, 500);
 // Initializes clock
 updateTime();
 
+// try to get the search engine already selected by the user,  if not use duckduckgo as default
+let search_engine = localStorage.getItem("search_engine") || "duckduckgo";
+// mark the chosen search engine as checked
+document.querySelector(`#option-${search_engine}`).setAttribute("checked",true)
+
+// url that comes before the query on search for each search engines
+const search_engine_url = {
+	"duckduckgo" : "https://duckduckgo.com/?",
+	"startpage" : "https://www.startpage.com/sp/search?",
+	"google" : "https://www.google.com/search?"
+}
+
+// select all the radio inputs under the name "search_engine" and add a click event to update the local storage
+document.querySelectorAll('input[name="search_engine"]').forEach((element)=>{
+	element.addEventListener('click', ()=> {
+		// update the default search engine to the local storage
+		search_engine = element.value;
+		localStorage.setItem("search_engine",element.value);
+	})
+})
+
 // Search functionality
 document.getElementById('search-btn').addEventListener('click', (e) => {
 	e.preventDefault();
 
 	let query = document.getElementById('search-input').value;
-	// Using google as default search engine.
-	// i will make the changing search engines in settings option in future
-	window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
+
+	// search with the selected search engine
+	window.location.href = `${search_engine_url[search_engine]}q=${encodeURIComponent(query)}`;
 });
 
 // Searches on pressing ENTER
@@ -82,7 +103,7 @@ document.getElementById('search-input').addEventListener('keypress', (e) => {
 
 	let query = document.getElementById('search-input');
 	if (e.key === 'Enter') {
-		window.open(`https://www.google.com/search?q=${encodeURIComponent(query.value)}`);
+		window.location.href = `${search_engine_url[search_engine]}q=${encodeURIComponent(query.value)}`;
 	} else {
 		query.value = query.value + e.key;
 	}
@@ -93,9 +114,8 @@ async function imageToBase64 (url_given) {
 	const url = new URL(url_given);
 
 	// fetch icon with duckduckgo
-	// note : if youre developing please replace the img.src value from link.icon to directly fetch the icon
-	// because cors will restrict the fetch, if you think you can use {mode:"no-cors"} it also fails as for 
-	// security purpose the browser will not let you read the response body.
+		// note : if youre developing please replace the img.src value from link.icon to directly fetch the icon
+		// 		  because cors will restrict the fetch
 	const response = await fetch(`https://icons.duckduckgo.com/ip3/${url.hostname}.ico`,{mode:"no-cors"});
 	
 	// converting the data into a blob
@@ -193,7 +213,6 @@ async function renderLinks(page = 1) {
 	paginatedLinks.forEach((link,index) => {
 		const a = document.createElement('a');
 		a.href = link.url;
-		a.target = '_blank';
 		a.innerText = link.name;
 		a.className = 'link-a-tag'
 
