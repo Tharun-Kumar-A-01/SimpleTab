@@ -26,7 +26,7 @@ jobs:
       - name: Create extension package
         run: |
           mkdir -p dist
-          zip -r dist/extension-${{ steps.get_version.outputs.version }}.zip \
+          zip -r dist/SimpleTab-${{ steps.get_version.outputs.version }}.zip \
             manifest.json \
             newtab.html \
             script.js \
@@ -35,14 +35,14 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "dist/extension-${{ steps.get_version.outputs.version }}.zip"
+          artifacts: "dist/SimpleTab-${{ steps.get_version.outputs.version }}.zip"
           tag: ${{ github.ref_name }}
-          name: Release ${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
           body: |
-            ## Browser Extension Release ${{ steps.get_version.outputs.version }}
+            ## Browser Extension Release v${{ steps.get_version.outputs.version }}
             
             ### Installation
-            1. Download the `extension-${{ steps.get_version.outputs.version }}.zip` file
+            1. Download the `SimpleTab-${{ steps.get_version.outputs.version }}.zip` file
             2. Extract the zip file
             3. Load the extension in your browser:
                - **Chrome/Edge**: Go to `chrome://extensions/`, enable Developer Mode, click "Load unpacked"

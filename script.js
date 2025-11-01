@@ -2,6 +2,7 @@ const linksDiv = document.getElementById('links-container');
 const paginationDiv = document.getElementById('pagination');
 const add_link = document.getElementById("add-link");
 const formElement = document.getElementById("overlay");
+const settings_btn = document.getElementById("settings-btn");
 
 // Parameters for pagination
 const LINKS_PER_PAGE = 4;
@@ -26,6 +27,22 @@ add_link.addEventListener("click", (e) => {
 		document.getElementById("cancel-btn").style.display = "flex";
 	}
 });
+
+// opens settings menu on click
+settings_btn.addEventListener('click', (e) => {
+	e.preventDefault();
+
+	// this is exactly the same thing as i did above but for the settings menu
+	if (document.getElementById("settings-menu").style.display === "flex") {
+		document.getElementById("settings-menu").style.display = "none";
+		document.getElementById("overlay-bg").style.display = "none";
+		document.getElementById("settings-ok").style.display = "none";
+	} else {
+		document.getElementById("settings-menu").style.display = "flex";
+		document.getElementById("overlay-bg").style.display = "block";
+		document.getElementById("settings-ok").style.display = "flex";
+	}
+})
 
 // Time and date update function
 function updateTime() {
@@ -178,6 +195,17 @@ document.getElementById("cancel-btn").addEventListener("click", (e) => {
 		document.getElementById("overlay").style.display = "none";
 		document.getElementById("overlay-bg").style.display = "none";
 		document.getElementById("cancel-btn").style.display = "none";
+	}
+})
+
+document.getElementById("settings-ok").addEventListener("click", (e) => {
+	e.preventDefault();
+
+	// functionality for clicking ok button in settings
+	if (document.getElementById("settings-menu").style.display === "flex") {
+		document.getElementById("settings-menu").style.display = "none";
+		document.getElementById("overlay-bg").style.display = "none";
+		document.getElementById("settings-ok").style.display = "none";
 	}
 })
 
